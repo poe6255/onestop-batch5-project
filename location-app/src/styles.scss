@@ -1,0 +1,17 @@
+$enable-rounded: false;
+$primary: #006893;
+$secondary: #464555;
+$success: #20c997;
+$warning: #fd7e14;
+$info: #00b2c3;
+$dark: #232648;
+$light: #E1DEE4;
+
+@import "node_modules/bootstrap/scss/bootstrap";
+
+.info {
+  padding: $spacer;
+  border: 1px solid $warning;
+  border-left: 5px solid $warning;
+  font-size: 18px;
+}

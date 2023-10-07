@@ -1,0 +1,7 @@
+<app-master-data title="Township" icon="buildings">
+  <app-township-list (onEdit)="editTownship($event)" [townships]="townships" table></app-township-list>
+
+  <app-township-search (onSearch)="search($event)" (onAdd)="openTownshipForm($event)" search></app-township-search>
+</app-master-data>
+
+<app-township-form [data]="targetTownship" (onSave)="saveTownship($event)"></app-township-form>

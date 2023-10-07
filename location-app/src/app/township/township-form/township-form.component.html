@@ -1,0 +1,46 @@
+<div class="modal fade" id="townshipModalId" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">
+          <i class="bi bi-{{ controls.id?.value == 0 ? 'plus-square' : 'pencil-square' }}"></i> {{
+          controls.id?.value ? 'Edit' : 'Add New' }}
+          Township
+        </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          (click)="initForm()"></button>
+      </div>
+      <form [formGroup]="form">
+        <div class="modal-body">
+          <app-form-group label="Name" [margin]="true" [valid]="controls.name?.valid" [touch]="controls.name?.touched"
+            icon="bi-type">
+            <input formControlName="name" type="text" class="form-control" placeholder="Division Name">
+          </app-form-group>
+
+          <app-form-group label="Burmese" [margin]="true" [valid]="controls.burmese?.valid"
+            [touch]="controls.burmese?.touched" icon="bi-type">
+            <input formControlName="burmese" type="text" class="form-control" placeholder="Burmese Name">
+          </app-form-group>
+
+          <app-form-group label="Division" [margin]="true" [valid]="controls.division?.valid"
+            [touch]="controls.division?.touched" icon="bi-geo-alt">
+            <select formControlName="divisionId" class="form-select">
+              <option value="0">Select Division</option>
+              <option *ngFor="let item of divisions" [value]="item.id">{{ item.name }}</option>
+            </select>
+          </app-form-group>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="initForm()"><i
+              class="bi bi-x-lg"></i>
+            Close</button>
+          <button type="button" class="btn btn-outline-primary" (click)="save()">
+            <i class="bi bi-save"></i> Save
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

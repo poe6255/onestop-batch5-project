@@ -1,0 +1,36 @@
+<div class="modal fade" [id]="loginFormId" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><i
+            class="bi bi-{{ isIn ? 'door-open-fill' : 'person-check'}}"></i> {{ btnText }} Form</h1>
+        <button (click)="initForm()" type="button" class="btn-close" data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <form [formGroup]="form">
+        <div class="modal-body">
+
+          <app-form-group label="Login ID" [margin]="true" icon="bi-person"
+            [touch]="form.get('loginId')?.touched || form.get('loginId')?.dirty" [valid]="form.get('loginId')?.valid">
+            <input formControlName="loginId" type="text" class="form-control" placeholder="Login Id">
+          </app-form-group>
+
+          <app-form-group label="Password" icon="bi-key"
+            [touch]="form.get('password')?.touched || form.get('password')?.dirty"
+            [valid]="form.get('password')?.valid">
+            <input formControlName="password" type="password" class="form-control" placeholder="Password">
+          </app-form-group>
+
+        </div>
+        <div class="modal-footer">
+          <button (click)="initForm()" type="button" class="btn btn-primary" data-bs-dismiss="modal"><i
+              class="bi bi-x-lg"></i>
+            Close</button>
+          <button type="button" class="btn btn-outline-primary" (click)="signInOrUp()">
+            <i class="bi bi-person-check"></i> {{ btnText }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
