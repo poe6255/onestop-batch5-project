@@ -1,0 +1,56 @@
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <img [src]="book.imgUrl"  class ="img-fluid">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{book.title}}</h5>
+                            <p class="lead card-text ">by {{book.author}}</p>
+                            <p class="lead card=text">{{book.price | currency :'US'}}</p>
+                            <p class="lead">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Et adipisci quaerat aliquam delectus id recusandae labore esse. Rem quibusdam est minus? Numquam minima distinctio eius neque laudantium quis consequuntur officia.</p>
+                        </div>
+                        <div class="card-footer">
+                            <div>
+                                <a  class="btn btn-primary m-3" [routerLink]="['author']">Author Details</a>
+                                <a class="btn btn-secondary"  [routerLink]="['review']">Book Review</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr class="my-5 ">
+<!-- {{book | json}} -->
+<div class="container mt-5">
+    <div class="row">
+        <div class="coll">
+
+            
+
+            
+            
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
+
+
+
+
+<h3>Hello =======</h3>
+
+<!-- {{$book | async |json}} -->
+
+
+
+

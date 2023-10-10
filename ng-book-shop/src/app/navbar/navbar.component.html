@@ -1,0 +1,26 @@
+<nav    th:fragment="navbar" class="navbar navbar-expand-md navbar-dark bg-primary text-white">
+    <a th:href="@{book/books}" class="navbar-brand">
+      <h3 class="mb-0">Book Shop</h3>
+    </a>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#myNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="myNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a href="#" th:href="@{'/'}" class="nav-link text-dark">Home</a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link text-dark">About</a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link text-dark">Contact Us</a>
+        </li>
+      </ul>
+  
+      
+  
+  
+      
+    </div>
+  </nav>

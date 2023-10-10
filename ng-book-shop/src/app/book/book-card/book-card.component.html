@@ -1,0 +1,14 @@
+<div class="card" *ngIf="book">
+<img [src]="book.imgUrl"   class="card-img-top" alt="">
+<div class="card-body">
+    <h5 class="card-title">{{book.title}}</h5>
+    <p class="lead card-text">by {{book.author}}</p>
+     <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, delectus.</p>
+</div>
+   <div class="card-footer">
+    <div class="d-flex justify-content-between">
+           <div><button class="btn  btn-outline-info" [routerLink]="['book',book.id]">Details</button></div>
+           <div >{{book.price | currency :'US'}} </div>
+    </div>
+   </div>
+</div>

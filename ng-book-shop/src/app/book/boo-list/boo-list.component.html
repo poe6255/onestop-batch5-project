@@ -1,0 +1,12 @@
+<ng-container *ngIf="(bookservice.$books | async) as books">
+   <div class="row">
+      <div class="col d-flex justify-content-end">
+        <i class="fas fa-2x fa-shopping-cart me-2 my-4"><span class="p-2 m-3 bg-success rounded text-white">{{(cartservice.$cart | async)?.['length']}}</span></i>
+       </div>
+   </div>
+    <div class="row" >
+        <div class="col-md-4" *ngFor="let book of books">
+            <app-book-card  [book]="book"></app-book-card>
+        </div>
+    </div>
+</ng-container>
