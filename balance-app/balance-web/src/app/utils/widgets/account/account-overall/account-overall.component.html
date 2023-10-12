@@ -1,0 +1,25 @@
+<h2 class="fw-bold text-secondary">Overall</h2>
+
+<div class="card px-3 mt-4">
+  <div class="card-body">
+
+    <div class="row border-bottom justify-content-center">
+      <div class="col border-end pt-2 text-center">
+        <h6 class="fw-bold">EXPENSE SO FAR</h6>
+        <p class="text-danger" *ngIf="expenseAmount">-${{expenseAmount | number: '1.2'}}</p>
+        <p class="text-warning" *ngIf="!expenseAmount">$0.0</p>
+      </div>
+      <div class="col text-center">
+        <h6 class="fw-bold">INCOME SO FAR</h6>
+        <p class="text-success">${{totalBalance + expenseAmount | number: '1.2'}}</p>
+      </div>
+    </div>
+
+    <div class="row justify-content-center pt-3 text-center">
+      <h6 class="fw-bold">TOTAL BALANCE</h6>
+      <p *ngIf="totalBalance">${{totalBalance | number: '1.2'}}</p>
+      <p *ngIf="!totalBalance">$0.00</p>
+    </div>
+
+  </div>
+</div>
