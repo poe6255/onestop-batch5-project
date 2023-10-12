@@ -18,37 +18,32 @@ import java.util.Locale;
 public class WebConfig implements WebMvcConfigurer {
     @Bean
     public LocaleResolver localeResolver(){
-        SessionLocaleResolver sessionLocaleResolver=
-                new SessionLocaleResolver();
+        SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
         sessionLocaleResolver.setDefaultLocale(Locale.US);
         return sessionLocaleResolver;
     }
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor(){
-        LocaleChangeInterceptor interceptor=
-                new LocaleChangeInterceptor();
+        LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
         interceptor.setParamName("lang");
         return interceptor;
     }
     @Bean
     public MessageSource messageSource(){
-        ReloadableResourceBundleMessageSource messageSource=
-                new ReloadableResourceBundleMessageSource();
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:messages");
         messageSource.setDefaultEncoding("utf-8");
         return messageSource;
     }
     @Bean
     public LocalValidatorFactoryBean validator(){
-        LocalValidatorFactoryBean validatorFactoryBean=
-                new LocalValidatorFactoryBean();
+        LocalValidatorFactoryBean validatorFactoryBean = new LocalValidatorFactoryBean();
         validatorFactoryBean.setValidationMessageSource(messageSource());
         return validatorFactoryBean;
     }
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(localeChangeInterceptor());
+       registry.addInterceptor(localeChangeInterceptor());
     }
 
     @Override
