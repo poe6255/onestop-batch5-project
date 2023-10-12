@@ -13,27 +13,25 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("")
+@RequestMapping("/api")
 public class BookApiController {
 
     private final BookService bookService;
-
-    @GetMapping("/book-list")
-    public List<BookDto> bookList() {
-        return bookService.findAllBook().stream()
-                .map(this::toDto).collect(Collectors.toList());
+    @GetMapping("/books-list")
+    private List<BookDto> bookDtoList(){
+        return bookService.findAllBooks().stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 
-    public BookDto toDto(Book book) {
+    public BookDto toDto(Book book){
         return new BookDto(
                 book.getId(),
                 book.getTitle(),
                 book.getPrice(),
                 book.getAuthor(),
-                book.getImageUrl(),
+                book.getImgUrl(),
                 book.getPublishedDate(),
-                book.getCategory().name()
-        );
+                book.getCategory().name());
     }
-
 }

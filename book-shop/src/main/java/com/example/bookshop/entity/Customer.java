@@ -3,6 +3,7 @@ package com.example.bookshop.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.parameters.P;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,7 +14,6 @@ import java.util.Set;
 @Getter
 @Setter
 public class Customer {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -24,14 +24,11 @@ public class Customer {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @OneToMany(mappedBy = "customer",cascade = CascadeType.PERSIST)
-    private Set<BookItem> bookItems=new HashSet<>();
+    @OneToMany(mappedBy = "customer" , cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    private Set<BookItems> bookItems = new HashSet<>();
 
-    public  void  addBook(BookItem bookItem){
-        bookItem.setCustomer(this);
-        this.bookItems.add(bookItem);
-
-
+    public void addBook(BookItems bookItems) {
+        bookItems.setCustomer(this);
+        this.bookItems.add(bookItems);
     }
 }
-

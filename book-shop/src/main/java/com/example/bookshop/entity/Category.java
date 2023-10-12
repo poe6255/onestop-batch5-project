@@ -1,12 +1,5 @@
 package com.example.bookshop.entity;
 
 public enum Category {
-    NOVEL,
-    HISTORICAL,
-    ROMANCE,
-    COMEDY,
-    TRAGETY,
-    SIFI,
-    DRAMA,
-    HORROR
+    NOVEL, HISTORICAL, SCIENCE_FICTION, ROMANCE, FICTION, HORROR;
 }

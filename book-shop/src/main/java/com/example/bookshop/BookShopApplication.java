@@ -17,39 +17,29 @@ import java.util.List;
 @SpringBootApplication
 @RequiredArgsConstructor
 public class BookShopApplication {
-    private  final BookDao bookDao;
+    private final BookDao bookDao;
 
     public static void main(String[] args) {
         SpringApplication.run(BookShopApplication.class, args);
     }
 
-    @Bean  @Transactional // @Profile("test")
-    public ApplicationRunner runner(){
-        return  r->{
+    @Bean
+    @Transactional
+    //@Profile("test")
+    public ApplicationRunner runner() {
+        return r -> {
             List.of(
+                            new Book("The Pianist: The Extraordinary Story of One Man's Survival in Warsaw, 1939–45", 35.5, "Władysław Szpilman", "https://source.unsplash.com/366x200/?sweet", LocalDate.of(1946, 1, 1), Category.HISTORICAL),
+                            new Book("The Book Thief", 40.5, "Markus Zusak", "https://source.unsplash.com/366x200/?books", LocalDate.of(2005, 3, 21), Category.HISTORICAL),
+                            new Book("Little Women", 40.5, "Louisa May Alcott", "https://source.unsplash.com/366x200/?girl", LocalDate.of(1968, 3, 21), Category.NOVEL),
+                            new Book("Coraline", 45.5, "Neil Gaiman", "https://source.unsplash.com/366x200/?cat", LocalDate.of(2002, 7, 2), Category.HORROR),
+                            new Book("Pride and Prejudice", 35.5, "Jane Austen", "https://source.unsplash.com/366x200/?love", LocalDate.of(1813, 1, 28), Category.ROMANCE),
+                            new Book("The Great Gatsby", 35.5, "F. Scott Fitzgerald", "https://source.unsplash.com/366x200/?ocean", LocalDate.of(1925, 4, 10), Category.FICTION),
+                            new Book("Dune", 35.5, "Frank Herbert", "https://source.unsplash.com/366x200/?dog", LocalDate.of(1965, 8, 10), Category.SCIENCE_FICTION)
 
-                    new Book("England History",35.5,"Macaulary","https://source.unsplash.com/366x200/?sunset",
-                            LocalDate.of(1957,3,21), Category.HISTORICAL),
-                    new Book("World History",35.5,"H.G Wells","https://source.unsplash.com/366x200/?rain",
-                            LocalDate.of(1957,3,21), Category.HISTORICAL),
-                    new Book(" Return of The Native",35.5,"ThomasHardy","https://source.unsplash.com/366x200/?flowers",
-                            LocalDate.of(1870,3,21), Category.NOVEL),
-                    new Book("A Tale of Two Cities",35.5,"Charles Dickens","https://source.unsplash.com/366x200/?rain",
-                            LocalDate.of(1859,3,21), Category.HISTORICAL),
-                    new Book("Sherlock Holmes",35.5,"Arthur Conan Doyle","https://source.unsplash.com/366x200/?tree",
-                            LocalDate.of(1859,3,21), Category.NOVEL),
-                    new Book("The Love Hypothesis ",35.5,"Ali Hazelwood","https://source.unsplash.com/366x200/?food",
-                            LocalDate.of(1859,3,21), Category.ROMANCE),
-                    new Book("The Haunting of House",35.5,"Shirley Jackson","https://source.unsplash.com/366x200/?sky",
-                            LocalDate.of(1959,3,21), Category.HORROR),
-                    new Book("Fractal Noice",35.5,"Christopher Paolini","https://source.unsplash.com/366x200/?snow",
-                            LocalDate.of(1959,3,21), Category.SIFI),
-                    new Book("Fractal Noice",35.5,"Christopher Paolini","https://source.unsplash.com/366x200/?ocean",
-                            LocalDate.of(1959,3,21), Category.SIFI)
-
-
-
-            ).forEach(bookDao::save);
+                    )
+                    .forEach(bookDao::save);
         };
+
     }
 }

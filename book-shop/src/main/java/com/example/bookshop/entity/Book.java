@@ -11,9 +11,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Entity
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,22 +21,21 @@ public class Book {
     private String title;
     private double price;
     private String author;
-    private String imageUrl;
+    private String imgUrl;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate publishedDate;
     @Enumerated(EnumType.STRING)
     private Category category;
+
     @Transient
     private List<Integer> quantityList = new LinkedList<>();
 
-
-    public Book(String title, double price, String author, String imageUrl, LocalDate publishedDate, Category category) {
+    public Book(String title, double price, String author, String imgUrl, LocalDate publishedDate, Category category) {
         this.title = title;
         this.price = price;
         this.author = author;
-        this.imageUrl = imageUrl;
+        this.imgUrl = imgUrl;
         this.publishedDate = publishedDate;
         this.category = category;
-
     }
 }

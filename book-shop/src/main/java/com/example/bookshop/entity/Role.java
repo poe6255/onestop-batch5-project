@@ -1,6 +1,5 @@
 package com.example.bookshop.entity;
 
 public enum Role {
-    USER,
-    ADMIN
+    ROLE_USER, ROLE_ADMIN,
 }

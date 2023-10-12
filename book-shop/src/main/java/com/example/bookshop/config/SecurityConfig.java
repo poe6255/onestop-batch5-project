@@ -14,33 +14,27 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-
-
-
     private final UserDetailsService userDetailsService;
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider(){
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+    public DaoAuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider provider =new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http)throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.formLogin(c -> c.loginPage("/login")
                 .failureUrl("/login-error")
                 .permitAll()
         ).logout(c -> c.logoutUrl("/logout")
-                .logoutSuccessUrl("/")
-                .permitAll());
-
-        http.authorizeHttpRequests(c->c.requestMatchers("/account/**")
+                .logoutSuccessUrl("/").permitAll());
+        http.authorizeHttpRequests(c -> c.requestMatchers("/account/**")
                 .hasRole("USER")
                 .anyRequest().permitAll());
 
         return http.build();
-
     }
     @Bean
     public PasswordEncoder passwordEncoder(){

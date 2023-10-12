@@ -1,5 +1,6 @@
 package com.example.bookshop.security;
 
+import com.example.bookshop.dao.CustomerDao;
 import com.example.bookshop.entity.Customer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,10 +14,11 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class SecurityUser implements UserDetails {
     private final Customer customer;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Stream.of(new SimpleGrantedAuthority(customer.getRole().name()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     @Override

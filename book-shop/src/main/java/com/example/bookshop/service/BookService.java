@@ -11,13 +11,13 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class BookService {
-    private  final BookDao bookDao;
+    private final BookDao bookDao;
 
-    public List<Book> findAllBook(){
-        return  bookDao.findAll();
+    public List<Book> findAllBooks() {
+        return bookDao.findAll();
     }
-    public  Book findBookById(int id){
-        return  bookDao.findById(id).
-                orElseThrow(EntityNotFoundException::new);
+
+    public Book findBookById(int id) {
+        return bookDao.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 }
