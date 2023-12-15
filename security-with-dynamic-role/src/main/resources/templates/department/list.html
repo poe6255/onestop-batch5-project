@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/masterLayout :: layout(~{::main}, ~{::script})}" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<main role="main">
+    <div th:if="${!departments.isEmpty()}">
+        <div class="card-header d-flex justify-content-between">
+            <h3>Department Tables</h3>
+<!--            <form class="d-flex" th:action="@{/department/find}" method="get" role="search">-->
+<!--                <input class="form-control me-2" type="search" name="key" placeholder="Search" aria-label="Search">-->
+<!--                <button class="btn btn-outline-success" type="submit">Search</button>-->
+<!--            </form>-->
+            <form>
+                <label for="search">Search: </label>
+                <input type="text" id="search" onkeyup="searchTable()" placeholder="Type to search...">
+            </form>
+        </div>
+        <table class="table table-striped" id="dataTable">
+            <thead class="thead-dark">
+            <tr>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="dep ,index : ${departments}">
+<!--                <td th:text="${dep.id}"></td>-->
+                <td th:text="${index.index + 1}"> </td>
+                <td th:text="${dep.name}"></td>
+<!--                <td class="d-flex">-->
+<!--                    <div class="d-inline me-2" >-->
+<!--                        <button  class="btn btn-outline-danger" id="delete" ><i class="fa fa-trash"></i></button>-->
+<!--                        <a  th:href="@{'/department/delete?id='+ ${dep.id}}" ></a></div>-->
+<!--                </td>-->
+                <td class="d-flex">
+                    <div class="d-inline me-2">
+                        <button class="btn btn-outline-danger" data-toggle="modal" th:data-target="#{'deleteModal'} + dep.id" id="delete">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                        <a th:href="@{'/department/delete?id='+ ${dep.id}}" th:id="${'deleteLink-' + dep.id}"></a>
+                    </div>
+                </td>
+
+
+            </tr>
+            </tbody>
+        </table>
+
+
+
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete this record?
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+                       >
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:if="${departments.isEmpty()}">
+        <p class="lead">There is no department yet.</p>
+        <a th:href="@{'/department/create'}" th:if="${accessUrl.contains('/department/create')}"
+           class="btn btn-outline-primary">New Department</a>
+    </div>
+</main>
+<script  th:inline="javascript">
+
+
+        function confirmDelete() {
+        var deleteLinkId = $('#delete').attr('id');
+        var deleteLink = $('#' + deleteLinkId).next('a').attr('href');
+        window.location.href = deleteLink;
+    }
+
+
+    function searchTable() {
+
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("search");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("dataTable");
+        tr = table.getElementsByTagName("tr");
+
+
+        for (i = 0; i < tr.length; i++) {
+
+            td = tr[i].getElementsByTagName("td")[1];
+
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+
+</script>
+
+
+</body>
+</html>

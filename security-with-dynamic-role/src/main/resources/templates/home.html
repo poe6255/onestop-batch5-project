@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/masterLayout :: layout(~{::main}, ~{::script})}"  xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<main role="main">
+		<h2>Welcome, User!</h2>
+
+
+
+<!--		<div th:if="${accessUrl.contains('/employee/find') &&-->
+<!--		 accessUrl.contains('/customer/find') &&-->
+<!--		 accessUrl.contains('/department/find')}">-->
+<!--			<p>This content is only visible to users with the 'ADMIN' role.</p>-->
+<!--			<a th:href="@{/employee/find}" class="btn btn-outline-primary">Employees</a>-->
+<!--			<a th:href="@{/customer/find}" class="btn btn-outline-primary">Customers</a>-->
+<!--			<a th:href="@{/department/find}" class="btn btn-outline-primary">Departments</a>-->
+<!--		</div>-->
+<!--		<div th:if="${(accessUrl.contains('/employee/find') || accessUrl.contains('/customer/find')) && !accessUrl.contains('/role/create')}">-->
+<!--			<p>This content is only visible to users with the 'EMPLOYEE' role.</p>-->
+<!--			<a th:if="${accessUrl.contains('/employee/find')}" th:href="@{/employee/find}" class="btn btn-outline-primary">Employees</a>-->
+<!--			<a th:if="${accessUrl.contains('/employee/find')}" th:href="@{/customer/find}" class="btn btn-outline-primary">Customers</a>-->
+<!--		</div>-->
+	</main>
+<script th:inline="javascript">
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/masterLayout :: layout(~{::main}, ~{::script})}" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+<body>
+<main role="main">
+    <div class="container rounded bg-light shadow p-4">
+        <h3>Role Form</h3>
+        <form th:action="@{|/role/update?id=*{id}|}" th:object="${role}" method="post">
+            <div class="form-floating m-2">
+                <input id="name" type="text" th:field="*{name}"
+                       th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'"
+                       class="form-control" placeholder="Role Name">
+                <label for="name">Role Name</label>
+                <small th:if="${#fields.hasErrors('name')}" class="invalid-feedback"
+                       th:errors="*{name}"></small>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-check form-switch" th:each="cr : ${customer}">
+                        <input class="form-check-input my-2" th:field="*{urls}" th:value="${cr.id}"
+                               th:checked="${role.urls.contains(cr)}" type="checkbox" role="switch"
+                               th:id="${cr.id}">
+                        <label class="form-check-label" th:for="${cr.id}" th:text="${cr.name}"></label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-check form-switch" th:each="er : ${employee}">
+                        <input class="form-check-input my-2" th:field="*{urls}" th:value="${er.id}"
+                               th:checked="${role.urls.contains(er)}" type="checkbox" role="switch"
+                               th:id="${er.id}">
+                        <label class="form-check-label" th:for="${er.id}" th:text="${er.name}"></label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-check form-switch" th:each="dr : ${department}">
+                        <input class="form-check-input my-2" th:field="*{urls}" th:value="${dr.id}"
+                               th:checked="${role.urls.contains(dr)}" type="checkbox" role="switch"
+                               th:id="${dr.id}">
+                        <label class="form-check-label" th:for="${dr.id}" th:text="${dr.name}"></label>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" value="Save Role" class="form-control btn btn-primary">
+        </form>
+    </div>
+</main>
+<script th:inline="javascript">
+
+</script>
+</body>
+</html>

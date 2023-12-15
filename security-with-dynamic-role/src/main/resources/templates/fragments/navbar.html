@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<nav th:fragment="navbar" class="navbar navbar-expand-lg bg-light shadow">
+    <div class="container-fluid text-black-50">
+        <a th:href="@{/home}" class="navbar-brand">MVC</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown me-2" th:if="${
+                accessUrl.contains('/customer/find') ||
+                accessUrl.contains('/customer/create') ||
+                accessUrl.contains('/customer/update') ||
+                accessUrl.contains('/customer/delete')
+                }">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Customer
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a  href="#" th:href="@{/customer/find}"
+                                th:if="${
+                accessUrl.contains('/customer/find') ||
+                accessUrl.contains('/customer/create') ||
+                accessUrl.contains('/customer/update') ||
+                accessUrl.contains('/customer/delete')
+                }"
+                                class="dropdown-item">Customers</a>
+                        </li>
+                        <li>
+                            <a th:if="${accessUrl.contains('/customer/create')}" href="#" th:href="@{/customer/create}"
+                               class="dropdown-item">Create Customer</a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="nav-item dropdown me-2" th:if="${
+                accessUrl.contains('/department/find') ||
+                accessUrl.contains('/department/create') ||
+                accessUrl.contains('/department/update') ||
+                accessUrl.contains('/department/delete')
+                }">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Department
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a th:if="${
+                accessUrl.contains('/department/find') ||
+                accessUrl.contains('/department/create') ||
+                accessUrl.contains('/department/update') ||
+                accessUrl.contains('/department/delete')
+                }" href="#" th:href="@{/department/find}"
+                               class="dropdown-item">Departments</a>
+                        </li>
+                        <li>
+                            <a th:if="${accessUrl.contains('/department/create')}" href="#" th:href="@{/department/create}"
+                               class="dropdown-item">Create
+                                Department</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown me-2" th:if="${
+                 accessUrl.contains('/employee/find') ||
+                accessUrl.contains('/employee/create') ||
+                accessUrl.contains('/employee/update') ||
+                accessUrl.contains('/employee/delete')
+                }">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Employee
+                    </a>
+                    <ul class="dropdown-menu" >
+                        <li>
+                            <a th:if="${
+                accessUrl.contains('/employee/find') ||
+                accessUrl.contains('/employee/create') ||
+                accessUrl.contains('/employee/update') ||
+                accessUrl.contains('/employee/delete')
+                }" href="#"
+                               th:href="@{/employee/find}"
+                               class="dropdown-item">Employees</a>
+                        </li>
+                        <li>
+                            <a th:if="${accessUrl.contains('/employee/create')}" href="#"
+                               th:href="@{/employee/create}"
+                               class="dropdown-item">Create
+                                Employee</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown me-2" th:if="${
+                 accessUrl.contains('/role/find')
+                }">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Role
+                    </a>
+                    <ul class="dropdown-menu" >
+                        <li>
+                            <a href="#"
+                               th:href="@{/role/find}"
+                               class="dropdown-item">Roles</a>
+                        </li>
+                        <li>
+                            <a href="#"
+                               th:href="@{/role/create}"
+                               class="dropdown-item">Create
+                                Role</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item me-2">
+                    <a th:href="@{/account/info}" class="nav-link"
+                    >Account
+                        Info</a>
+                </li>
+                <li class="nav-item me-2">
+                    <a class="nav-link" href="javascript:document.logoutForm.submit()">Logout</a>
+
+                    <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+                        <input type="submit" hidden value="Sign Out">
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

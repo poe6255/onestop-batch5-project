@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/masterLayout :: layout(~{::main}, ~{::script})}" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<main role="main">
+
+    <div th:if="${!employees.isEmpty()}">
+        <div class="card-header d-flex justify-content-between">
+            <h3>Employee Tables</h3>
+            <form action="">
+                <label >Search : </label>
+                <input type="text" id="searchInput" placeholder="Search for names...">
+            </form>
+        </div>
+        <table class="table table-striped" id="dataTable">
+            <thead class="thead-dark">
+            <tr>
+            <tr>
+                <th>Id</th>
+                <th>UserName</th>
+                <th>phoneNumber</th>
+                <th>CubicleNumber</th>
+                <th>Role</th>
+                <th>State</th>
+                <th>Township</th>
+                <th>Active</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="em ,index :${employees}">
+
+                <td th:text="${size + index.index}"></td>
+                <td th:text="${em.username}"></td>
+                <td th:text="${em.phoneNumber}"></td>
+                <td th:text="${em.cubicleNumber}"></td>
+                <td th:text="${em.role}"></td>
+                <th th:text="${em.township.getState().name}"></th>
+                <td th:text="${em.township.name}"></td>
+                <td th:text="${em.active}"></td>
+                <td class="d-flex">
+                    <div class="d-inline me-2"
+                         th:if="${accessUrl.contains('/employee/delete')}">
+                        <button th:hidden="${!em.active}" class="btn btn-outline-danger"
+                                 data-toggle="modal"    data-target="#deleteConfirmationModal"  th:id="|${em.id}-delete|"><i class="fa fa-trash"></i></button>
+                        <a hidden th:href="@{'/employee/delete?id='+ ${em.id}}" th:id="|${em.id}'-delete-link'|"></a>
+                    </div>
+                    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete <span id="deleteItemName"></span>?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-inline" th:if="${accessUrl.contains('/employee/update')}" >
+                        <a th:hidden="${!em.active}" th:href="@{'/employee/update?id='+ ${em.id}}"
+                           class="btn btn-outline-warning"><i class="fa-regular fa-pen-to-square"></i></a></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <nav class="d-flex justify-content-center" aria-label="Page navigation example">
+            <ul class="pagination" th:each="pn : ${pNums}">
+                <li class="page-item"><a class="page-link" th:href="@{|/employee/find?pageNumber=${pn}|}"
+                                         th:text="${pn+1}"></a></li>
+            </ul>
+        </nav>
+    </div>
+    <div th:if="${employees.isEmpty()}">
+        <p class="lead">There is no employee yet.</p>
+        <a th:if="${employees.isEmpty() && accessUrl.contains('/employee/create')}" th:href="@{'/employee/create'}"
+           class="btn btn-outline-primary">New Employee</a>
+    </div>
+</main>
+
+<script th:inline="javascript">
+    function del(id, name) {
+        var modal = $('#deleteConfirmationModal');
+        modal.find('#deleteItemName').text(name);
+        modal('show');
+
+
+        $('#confirmDeleteButton').off('click').on('click', function () {
+            document.getElementById(`${id}-delete-link`).click();
+            modal('hide');
+        });
+    }
+    // function deleteRow(rowId) {
+    //     var table = document.getElementById("dataTable");
+    //     var rows = table.getElementsByTagName("tr");
+    //
+    //
+    //     for (var i = 0; i < rows.length; i++) {
+    //         if (parseInt(rows[i].cells[0].textContent) === rowId) {
+    //
+    //             rows[i].parentNode.removeChild(rows[i]);
+    //
+    //
+    //             updateRowIds();
+    //             break;
+    //         }
+    //     }
+    // }
+    //
+    // function updateRowIds() {
+    //     var table = document.getElementById("dataTable");
+    //     var rows = table.getElementsByTagName("tr");
+    //
+    //
+    //     for (var i = 1; i < rows.length; i++) {
+    //         rows[i].cells[0].textContent = i;
+    //     }
+    // }
+    // function del(id, name){
+    //     if(confirm(`Do you want to delete ${name}`)){
+    //         document.getElementById(`${id}-delete-link`).click();
+    //     }
+    // }
+
+    function searchTable() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("dataTable");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    document.getElementById("searchInput").addEventListener("input", searchTable);
+
+</script>
+</body>
+</html>

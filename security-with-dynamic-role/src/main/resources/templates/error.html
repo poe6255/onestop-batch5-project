@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html   xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<main role="main" >
+  <div class="container mt-5"  style="text-align: center">
+    <h3 class="text-danger">Error Status </span> || Status Code
+      <span th:text="${statusCode}"></span></h3>
+    <p  style="color: red"  th:text="${errorMessage}"></p>
+
+
+  </div>
+</main>
+</body>
+</html>

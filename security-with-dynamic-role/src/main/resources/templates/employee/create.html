@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/masterLayout :: layout(~{::main}, ~{::script})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../static/bootstrap/css/bootstrap.min.css"
+          th:href="@{/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="../../static/fontawesome/css/all.min.css"
+          th:href="@{/fontawesome/css/all.min.css}">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" rel="stylesheet">
+
+</head>
+<body>
+<main role="main">
+    <div class="container rounded bg-light shadow p-4">
+        <h3>Employee Form </h3>
+        <form name="employeeForm" th:action="@{/employee/create}"  th:object="${employee}"  method="post">
+            <div class="form-group  m-3">
+                <label for="username" class="mb-2">User Name</label>
+                <input id="username" type="text" th:field="*{username}"
+                       autocomplete
+                       th:classappend="${#fields.hasErrors('username')} ? 'is-invalid'"
+                       class="form-control" placeholder="User Name">
+
+                <small th:if="${#fields.hasErrors('username')}" class="invalid-feedback"
+                       th:errors="*{username}"></small>
+            </div>
+            <div class="form-group m-3 ">
+                <label for="password" class="mb-2">Password</label>
+                <div class="input-group"  >
+                    <input   autocomplete type="password" class="form-control" th:field="*{password}"
+                             th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'"
+                             id="password"  placeholder="Enter password">
+                    <span  class="input-group-text eye-icon" id="togglePassword">
+                                 <i class="fa fa-eye-slash toggle-password" ></i>
+                          </span>
+                    <small th:if="${#fields.hasErrors('password')}" class="invalid-feedback"
+                           th:errors="*{password}"></small>
+                </div>
+
+            </div>
+
+            <div class="form-group m-3">
+                <label for="email" class="mb-2">Email</label>
+                <input id="email" type="email" th:field="*{email}" autocomplete
+                       th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"
+                       class="form-control" placeholder="Email">
+
+                <small th:if="${#fields.hasErrors('email')}" class="invalid-feedback"
+                       th:errors="*{email}"></small>
+            </div>
+            <div class="form-group m-3" id="phoneNumberForm">
+                <label for="phoneNumber" class="mb-2">Phone Number</label>
+                <input  id="phoneNumber" type="text" th:field="*{phoneNumber}"
+                        maxlength="11" oninput="validatePhoneNumber()"
+                        th:classappend="${#fields.hasErrors('phoneNumber')} ? 'is-invalid'"
+                        class="form-control" >
+                <p id="errorMessage"  class="error-message" style="display: none;color: red">Please enter a valid phone number.</p>
+
+                <small  th:if="${#fields.hasErrors('phoneNumber')}" class="invalid-feedback"
+                        th:errors="*{phoneNumber}"></small>
+
+            </div>
+            <div class="form-group m-3">
+                <label for="cub" class="mb-2">Cubicle Number</label>
+                <input id="cub" type="text" th:field="*{cubicleNumber}" th:classappend="${#fields.hasErrors('cubicleNumber')} ? 'is-invalid'"
+                       class="form-control">
+
+                <small th:if="${#fields.hasErrors('cubicleNumber')}" class="invalid-feedback"
+                       th:errors="*{cubicleNumber}"></small>
+            </div>
+            <div th:if="${!departments.isEmpty()}" class="form-group m-3">
+                <label for="department" class="mb-2">Department</label>
+                <select th:classappend="${#fields.hasErrors('department')} ? 'is-invalid'"
+                        th:field="*{department}" class="form-select"  id="department">
+                    <option value="">-- Choose Department --</option>
+                    <option th:each="dep : ${departments}" th:value="${dep.id}" th:text="${dep.name}"></option>
+                </select>
+
+                <small th:if="${#fields.hasErrors('department')}" class="invalid-feedback"
+                       th:errors="*{department}"></small>
+            </div>
+
+            <div class="form-group m-3" th:if="${departments.isEmpty()}">
+                <p>You can't create employee because there is no department.</p>
+                <a th:if="${accessUrl.contains('/department/create')}" th:href="@{/department/create}" class=" btn btn-outline-primary">
+                    Create Department
+                </a>
+            </div>
+            <div class="form-group m-3">
+                <label for="role" class="mb-2">Role</label>
+                <select th:classappend="${#fields.hasErrors('role')} ? 'is-invalid'"
+                        th:field="*{role}" class="form-select"  id="role">
+                    <option th:selected="${employee.role?.id > 0}" value="">-- Choose Role --</option>
+                    <option th:selected="${employee.role?.id == r.id}" th:each="r : ${roles}" th:value="${r.id}" th:text="${r.name}"></option>
+                </select>
+
+                <small th:if="${#fields.hasErrors('role')}" class="invalid-feedback"
+                       th:errors="*{role}"></small>
+            </div>
+
+
+            <div class="form-group m-3">
+                <label for="state" class="mb-2">State</label>
+                <select class="form-select" id="state"  onchange="updateTownshipSelection()" th:classappend="${#fields.hasErrors('state')} ?
+                'is-invalid'" th:field="*{state}">
+                    <option value="">-- Choose state --</option>
+                    <option th:name="${state.id}" th:each="state : ${states}" th:value="${state.id}" th:text="${state.name}"></option>
+                </select>
+                <small th:if="${#fields.hasErrors('state')}" class="invalid-feedback"
+                       th:errors="*{state}"></small>
+
+            </div>
+
+            <div class="form-group m-3">
+                <label for="township" class="mb-2">Township</label>
+                <select  disabled th:classappend="${#fields.hasErrors('township')} ? 'is-invalid'" th:field="*{township}" class="form-select" id="township">
+                    <option value="">Choose Township</option>
+
+                    <option    th:each="township : ${townships}" th:value="${township.id}" th:text="${township.name}"></option>
+                </select>
+
+                <small th:if="${#fields.hasErrors('township')}" class="invalid-feedback"
+                       th:errors="*{township}"></small>
+            </div>
+
+            <div class="m-3">
+                <button id="submit" type="submit" class="text-center form-control btn btn-outline-primary">Save Employee</button>
+            </div>
+
+        </form>
+
+    </div>
+
+</main>
+
+
+<script th:inline="javascript">
+
+
+
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        var passwordInput = document.getElementById('password');
+        var icon = this.querySelector('i');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        }
+    });
+
+
+
+    function updateTownshipSelection() {
+        var stateSelect = document.getElementById("state");
+        var townshipSelect = document.getElementById("township");
+
+        if (stateSelect.value === "select") {
+            townshipSelect.disabled = true;
+        } else {
+            townshipSelect.disabled = false;
+        }
+    }
+
+    const states = /*[[${states}]]*/ [];
+
+    const state = document.getElementById('state')
+    const township = document.getElementById('township')
+
+
+
+
+
+    state.addEventListener('change', e => {
+        let selected = e.currentTarget.selectedOptions.item(0);
+        let ts = states.find(s => s.id === +selected.value)
+        township.innerHTML = '';
+        var defaultOption = document.createElement("option");
+        defaultOption.text = "Choose Township";
+        defaultOption.value = "";
+        township.add(defaultOption);
+        if(ts){
+            for(let t of ts.townships){
+                const opt = document.createElement('option')
+                opt.value = t.id;
+                opt.innerText = t.name;
+                township.add(opt);
+            }
+        }
+        township.selectedIndex = 0;
+    })
+
+    // township.addEventListener('change', e => {
+    //
+    //     let selected = e.currentTarget.selectedOptions.item(0);
+    //     if(selected){
+    //         let s = document.getElementById(selected.getAttribute('name'))
+    //         if(s)
+    //             s.selected = true;
+    //     }
+    // })
+
+    // document.getElementById('phoneNumber').addEventListener('input', function (event) {
+    //     var phoneNumberInput = event.target.value;
+    //     var numericValue = phoneNumberInput.replace(/\D/g, '');
+    //     event.target.value = numericValue;
+    //     if (numericValue.length > 11) {
+    //         event.target.value = numericValue.slice(0, 11);
+    //     }
+    // });
+    function validatePhoneNumber() {
+        const phoneNumberInput = document.getElementById('phoneNumber');
+        const errorMessage = document.getElementById('errorMessage');
+        const phoneNumber = phoneNumberInput.value;
+
+
+        const numericPhoneNumber = phoneNumber.replace(/\D/g, '');
+
+        if (numericPhoneNumber.length === 11) {
+
+            errorMessage.style.display = 'none';
+        } else {
+
+            errorMessage.style.display = 'block';
+        }
+    }
+
+
+</script>
+
+
+
+</body>
+</html>

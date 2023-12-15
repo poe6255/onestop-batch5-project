@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/masterLayout :: layout(~{::main}, ~{::script})}" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<body>
+<main role="main">
+    <div th:if="${!roles.isEmpty()}">
+        <div hidden class="card-header d-flex justify-content-between">
+            <h3>Employee Tables</h3>
+<!--            <form class="d-flex" th:action="@{/role/find}" method="get" role="search">-->
+<!--                <input class="form-control me-2" type="search" name="key" placeholder="Search" aria-label="Search">-->
+<!--                <button class="btn btn-outline-success" type="submit">Search</button>-->
+<!--            </form>-->
+            <form>
+                <label for="search">Search: </label>
+                <input type="text" id="search" onkeyup="searchTable()" placeholder="Type to search...">
+            </form>
+        </div>
+        <table class="table table-striped" id="dataTable">
+            <thead class="thead-dark">
+            <tr>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Access Url</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="role ,index :   ${roles}">
+                <td th:text="${index.index+1}"></td>
+                <td th:text="${role.name}"></td>
+                <td>
+                    <table>
+                        <tr th:each="url : ${role.urls}">
+                            <td th:text="${url.name}"></td>
+                        </tr>
+                    </table>
+                </td>
+                <td class="d-flex">
+                    <div class="d-inline me-2">
+                        <button class="btn btn-outline-danger" id="delete" th:onclick="del([[${role.id}]], [[${role.name}]])"><i class="fa fa-trash"></i></button>
+                        <a hidden th:href="@{'/role/delete?id='+ ${role.id}}" th:id="|${role.id}-delete-link|"></a></div>
+                    <div class="d-inline">
+                        <a th:href="@{'/role/update?id='+ ${role.id}}"
+                           class="btn btn-outline-warning"><i class="fa-regular fa-pen-to-square"></i></a></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${roles.isEmpty()}">
+        <p class="lead">There is no role yet.</p>
+        <a th:href="@{'/role/create'}" class="btn btn-outline-success">New Role</a>
+    </div>
+
+</main>
+
+<script th:inline="javascript">
+    function del(id, name){
+        if(confirm(`Do you want to delete ${name}`)){
+            document.getElementById(`${id}-delete-link`).click();
+        }
+    }
+    function searchTable() {
+
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("search");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("dataTable");
+        tr = table.getElementsByTagName("tr");
+
+
+        for (i = 0; i < tr.length; i++) {
+
+            td = tr[i].getElementsByTagName("td")[1];
+
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+</body>
+</html>

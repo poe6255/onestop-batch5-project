@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/masterLayout :: layout(~{::main}, ~{::script})}" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<main role="main">
+    <div class="container rounded bg-light shadow p-4">
+        <h3>Department Form</h3>
+        <form th:action="@{/department/create}" th:object="${department}" method="post">
+            <div class="form-floating m-3">
+                <input th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'"
+                       required type="text" class="form-control" th:field="*{name}" id="department"
+                       placeholder="Department Name">
+                <label for="department">Department Name</label>
+                <small th:if="${#fields.hasErrors('name')}" class="invalid-feedback"
+                       th:errors="*{name}"></small>
+            </div>
+            <input type="submit" value="save" class="form-control btn btn-outline-primary"/>
+        </form>
+    </div>
+</main>
+
+<script th:inline="javascript">
+
+</script>
+</body>
+</html>

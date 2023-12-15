@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/masterLayout :: layout(~{::main}, ~{::script})}" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<main role="main">
+    <div class="container rounded bg-light shadow p-4">
+        <h3>Customer Form</h3>
+        <form  name="customerForm" th:action="@{/customer/create}" th:object="${customer}"  method="post">
+            <div class="form-group  m-3">
+                <label for="username" class="mb-2">User Name</label>
+
+                <input id="username" type="text" th:field="*{username}"
+                       autocomplete
+                       th:classappend="${#fields.hasErrors('username')} ? 'is-invalid'"
+                       class="form-control" placeholder="User Name">
+
+                <small th:if="${#fields.hasErrors('username')}" class="invalid-feedback"
+                       th:errors="*{username}"></small>
+            </div>
+            <div class="form-group m-3 ">
+                <!--                <input id="password" type="password" th:field="*{password}"-->
+                <!--                       th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'"-->
+                <!--                       class="form-control" placeholder="Password">-->
+                <label for="password" class="mb-2">Password</label>
+                <div class="input-group"  >
+                    <input   autocomplete type="password" class="form-control" th:field="*{password}"
+                             th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'"
+                             id="password"  placeholder="Enter password">
+
+                    <span  class="input-group-text eye-icon" id="togglePassword">
+                                 <i class="fa fa-eye-slash toggle-password" ></i>
+                          </span>
+
+                    <small th:if="${#fields.hasErrors('password')}" class="invalid-feedback"
+                           th:errors="*{password}"></small>
+
+                </div>
+
+            </div>
+            <div class="form-group m-3">
+                <label for="email" class="mb-2">Email</label>
+                <input id="email" type="email" th:field="*{email}" autocomplete
+                       th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"
+                       class="form-control" placeholder="Email">
+
+                <small th:if="${#fields.hasErrors('email')}" class="invalid-feedback"
+                       th:errors="*{email}"></small>
+            </div>
+
+            <div class="form-group m-3">
+                <label for="role" class="mb-2">Role</label>
+                <select th:classappend="${#fields.hasErrors('role')} ? 'is-invalid'"
+                        th:field="*{role}" class="form-select"  id="role">
+                    <option th:selected="${customer.role?.id > 0}" value="">-- Choose Role --</option>
+                    <option th:selected="${customer.role?.id == r.id}" th:each="r : ${roles}" th:value="${r.id}" th:text="${r.name}"></option>
+                </select>
+
+                <small th:if="${#fields.hasErrors('role')}" class="invalid-feedback"
+                       th:errors="*{role}"></small>
+            </div>
+            <div class="form-group m-3">
+                <label for="state" class="mb-2">State</label>
+                <select class="form-select" id="state"  name="state" onchange="updateTownshipSelection()"
+                        th:classappend="${#fields.hasErrors('state')} ? 'is-invalid'" th:field="*{state}">
+                    <option value="" >-- Choose state --</option>
+                    <option th:id="${state.id}" th:each="state : ${states}" th:value="${state.id}" th:text="${state.name}"></option>
+                </select>
+                <small th:if="${#fields.hasErrors('state')}" class="invalid-feedback"
+                       th:errors="*{state}"></small>
+
+            </div>
+            <div class="form-group m-3">
+                <label for="township" class="mb-2">Township</label>
+                <select disabled th:classappend="${#fields.hasErrors('township')} ? 'is-invalid'" th:field="*{township}" class="form-select" id="township">
+                    <option value="">Choose Township</option>
+                    <option th:each="township : ${townships}" th:name="${township.state.id}" th:value="${township.id}" th:text="${township.name}"></option>
+                </select>
+
+                <small th:if="${#fields.hasErrors('township')}" class="invalid-feedback"
+                       th:errors="*{township}"> Please choose Township</small>
+
+            </div>
+            <div class="m-3">
+                <button id="submit" type="submit"   class="text-center form-control btn btn-outline-primary">Save Customer</button>
+            </div>
+        </form>
+
+    </div>
+</main>
+<script th:inline="javascript">
+
+
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        var passwordInput = document.getElementById('password');
+        var icon = this.querySelector('i');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        }
+    });
+    function updateTownshipSelection() {
+        var stateSelect = document.getElementById("state");
+        var townshipSelect = document.getElementById("township");
+
+
+
+        if (stateSelect.value === "select") {
+            townshipSelect.disabled = true;
+        } else {
+            townshipSelect.disabled = false;
+        }
+        townshipSelect.selectedIndex=0;
+    }
+
+
+
+    const states = /*[[${states}]]*/ [];
+
+    const state = document.getElementById('state')
+    const township = document.getElementById('township')
+
+
+    state.addEventListener('change', e => {
+        let selected = e.currentTarget.selectedOptions.item(0);
+        let ts = states.find(s => s.id === +selected.value)
+        township.innerHTML = '';
+        var defaultOption = document.createElement("option");
+        defaultOption.text = "Choose Township";
+        defaultOption.value = "";
+        township.add(defaultOption);
+        if(ts){
+            for(let t of ts.townships){
+                const opt = document.createElement('option')
+                opt.value = t.id;
+                opt.innerText = t.name;
+                township.add(opt);
+            }
+        }
+        township.selectedIndex = 0;
+    })
+
+    township.addEventListener('change', e => {
+        let selected = e.currentTarget.selectedOptions.item(0);
+        if(selected){
+            let s = document.getElementById(selected.getAttribute('name'))
+            if(s)
+                s.selected = true;
+        }
+    })
+
+
+</script>
+</body>
+</html>

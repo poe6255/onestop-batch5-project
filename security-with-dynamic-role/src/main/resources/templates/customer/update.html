@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/masterLayout :: layout(~{::main}, ~{::script})}" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<main role="main">
+    <div class="container rounded bg-light shadow p-4">
+        <h3>Customer Form</h3>
+        <form name="customerForm" th:action="@{|/customer/update?id=*{id}|}" th:object="${customer}" method="post">
+            <div class="form-floating m-4">
+                <input id="username" type="text" th:field="*{username}" th:value="*{username}"
+                       autocomplete th:classappend="${#fields.hasErrors('username')} ? 'is-invalid'"
+                       class="form-control" placeholder="User Name">
+                <label for="username">User Name</label>
+                <small th:if="${#fields.hasErrors('username')}" class="invalid-feedback"
+                       th:errors="*{username}"></small>
+            </div>
+            <div class="form-floating m-4">
+                <input id="email" type="email" th:field="*{email}" th:value="*{email}"
+                       th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"
+                       class="form-control" placeholder="Email">
+                <label for="email">Email</label>
+                <small th:if="${#fields.hasErrors('email')}" class="invalid-feedback"
+                       th:errors="*{email}"></small>
+            </div>
+            <div class="form-floating m-4">
+
+                <select th:classappend="${#fields.hasErrors('role')} ? 'is-invalid'"
+                        th:field="*{role}" class="form-select"  id="role">
+                    <option th:selected="${customer.role?.id > 0}" value="">-- Choose Role --</option>
+                    <option th:selected="${customer.role?.id == r.id}" th:each="r : ${roles}" th:value="${r.id}" th:text="${r.name}"></option>
+                </select>
+                <label for="role" class="mb-2">Role</label>
+                <div id="roleError" style="color: red" class="error-message"></div>
+                <small th:if="${#fields.hasErrors('role')}" class="invalid-feedback"
+                       th:errors="*{role}"></small>
+            </div>
+            <div class="form-floating m-4">
+                <select class="form-select" id="state">
+                    <option th:selected="${customer.township.state.id == state.id}" th:name="${state.id}"
+                            th:each="state : ${states}" th:value="${state.id}" th:text="${state.name}"></option>
+                </select>
+                <small th:if="${#fields.hasErrors('township')}" class="invalid-feedback">Please select state.</small>
+                <label for="state">State</label>
+            </div>
+            <div class="form-floating m-4">
+                <select th:classappend="${#fields.hasErrors('township')} ? 'is-invalid'" th:field="*{township}"
+                        class="form-select" id="township">
+                    <option th:each="township : ${customer.township.state.townships}" th:value="${township.id}"
+                            th:selected="${customer.township.id == township.id}" th:text="${township.name}"></option>
+                </select>
+                <small th:if="${#fields.hasErrors('township')}" class="invalid-feedback"
+                       th:errors="*{township}"></small>
+                <label for="township">township</label>
+            </div>
+            <div class="m-4">
+                <button id="submit" type="submit" class="text-center form-control btn btn-outline-primary">Update Customer</button>
+            </div>
+        </form>
+
+    </div>
+</main>
+<script th:inline="javascript">
+    const states = /*[[${states}]]*/ [];
+
+    const state = document.getElementById('state')
+    const township = document.getElementById('township')
+
+
+    state.addEventListener('change', e => {
+        let selected = e.currentTarget.selectedOptions.item(0);
+        let ts = states.find(s => s.id === +selected.value)
+        township.innerHTML = '';
+        if(ts){
+            for(let t of ts.townships){
+                const opt = document.createElement('option')
+                opt.value = t.id;
+                opt.innerText = t.name;
+                township.add(opt);
+            }
+        }
+    })
+
+    township.addEventListener('change', e => {
+        let selected = e.currentTarget.selectedOptions.item(0);
+        if(selected){
+            let s = document.getElementById(selected.getAttribute('name'))
+            if(s)
+                s.selected = true;
+        }
+    })
+
+</script>
+</body>
+</html>
